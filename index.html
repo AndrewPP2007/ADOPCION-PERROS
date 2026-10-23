@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ApliWeb - Adopción de perros</title>
+    <title>ADOPCION-PERROS - Registro de Mascotas</title>
     <link rel="stylesheet" href="estyle.css">
 </head>
 <body>
-    <h1>Bienvenido a ApliWeb</h1>
-    <p id="mensaje">Conoce nuestro proyecto web.</p>
+    <h1>Refugio y Veterinaria ADOPCION-PERROS</h1>
+    <p id="mensaje">Conoce nuestro proyecto web y registra una nueva mascota.</p>
+    
+    <!-- Formulario de Registro de Mascotas -->
+    <section class="form-container">
+        <h2>Registro de Nuevo Can</h2>
+        <form id="formMascota">
+            <input type="text" id="nombreMascota" placeholder="Nombre del perro" required>
+            <input type="text" id="razaMascota" placeholder="Raza" required>
+            <input type="number" id="edadMascota" placeholder="Edad (años)" required>
+            <button type="submit">Registrar Mascota</button>
+        </form>
+    </section>
+
+    <br>
     <button id="boton">Haz clic aquí</button>
     <script src="script.js"></script>
 </body>
