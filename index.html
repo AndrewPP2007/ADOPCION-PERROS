@@ -3,23 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADOPCION-PERROS - Registro de Mascotas</title>
+    <title>ADOPCION-PERROS - Portal Principal</title>
     <link rel="stylesheet" href="estyle.css">
 </head>
 <body>
-    <h1>Refugio y Veterinaria ADOPCION-PERROS</h1>
-    <p id="mensaje">Conoce nuestro proyecto web y registra una nueva mascota.</p>
-    
-    <!-- Formulario de Registro de Mascotas -->
-    <section class="form-container">
-        <h2>Registro de Nuevo Can</h2>
-        <form id="formMascota">
-            <input type="text" id="nombreMascota" placeholder="Nombre del perro" required>
-            <input type="text" id="razaMascota" placeholder="Raza" required>
-            <input type="number" id="edadMascota" placeholder="Edad (años)" required>
-            <button type="submit">Registrar Mascota</button>
-        </form>
-    </section>
+    <header>
+        <h1>Refugio y Veterinaria ADOPCION-PERROS</h1>
+        <p id="mensaje">Portal oficial de gestión, adopción y control de canes.</p>
+        <nav class="main-nav">
+            <a href="administracion/index.html">Administración</a> |
+            <a href="adopciones/index.html">Adopciones</a> |
+            <a href="perros/index.html">Perros</a> |
+            <a href="usuarios/index.html">Usuarios</a> |
+            <a href="veterinaria/index.html">Veterinaria</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="form-container">
+            <h2>Registro de Nuevo Can</h2>
+            <form id="formMascota">
+                <input type="text" id="nombreMascota" placeholder="Nombre del perro" required>
+                <input type="text" id="razaMascota" placeholder="Raza" required>
+                <input type="number" id="edadMascota" placeholder="Edad (años)" required>
+                <button type="submit">Registrar Mascota</button>
+            </form>
+        </section>
+    </main>
 
     <br>
     <button id="boton">Haz clic aquí</button>
