@@ -350,4 +350,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderizarCatalogoFiltrado(bd, "");
   dibujarGraficoImpacto(bd);
   inicializarEventosGlobales(bd);
-});
+
