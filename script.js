@@ -1,98 +1,128 @@
-console.log("Sistema ADOPCION-PERROS iniciado correctamente (Versión Modular).");
+const CLAVE_BD_ADOPCION = "ADOPCION_PERROS_BD_2021_2026";
 
-// ==========================================
-// 1. LÓGICA ACTIVA (Funcional para las vistas actuales)
-// ==========================================
-
-// Botón de prueba clásico
-const boton = document.getElementById("boton");
-const mensaje = document.getElementById("mensaje");
-
-if (boton) {
-    boton.addEventListener("click", function () {
-        mensaje.textContent = "¡Conexión de JavaScript validada con éxito en el refugio!";
-    });
-}
-
-// Registro dinámico de mascotas (Formulario actual)
-const formMascota = document.getElementById("formMascota");
-
-if (formMascota) {
-    formMascota.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const nombre = document.getElementById("nombreMascota").value;
-        const raza = document.getElementById("razaMascota").value;
-        const edad = document.getElementById("edadMascota").value;
-
-        alert(`¡Registro exitoso en el refugio!\nMascota: ${nombre}\nRaza: ${raza}\nEdad: ${edad} años.`);
-        formMascota.reset();
-    });
-}
-
-
-/* ==========================================================================
-   2. MÓDULOS DE BASE DE DATOS INTERNA Y 5 AÑOS DE OPERACIÓN (FUTURO / SESIONES FINALES)
-   ==========================================================================
-   Las siguientes estructuras simulan el almacenamiento histórico del refugio 
-   durante 5 años de funcionamiento (2021-2026). Descomentar en fases avanzadas.
-   ========================================================================== */
-
-/*
-// --- BASE DE DATOS SIMULADA (LOCALSTORAGE + HISTORIAL DE 5 AÑOS) ---
-const DB_REFUGIO = {
-    canesHistoricos: [
-        { id: 1, nombre: "Max", raza: "Mestizo", edad: 6, ingreso: "2021-03-15", estado: "Adoptado (2021)" },
-        { id: 2, nombre: "Bobby", raza: "Golden Retriever", edad: 7, ingreso: "2021-06-10", estado: "Adoptado (2022)" },
-        { id: 3, nombre: "Thor", raza: "Pastor Alemán", edad: 5, ingreso: "2022-01-20", estado: "Adoptado (2023)" },
-        { id: 4, nombre: "Firulais", raza: "Mestizo", edad: 2, ingreso: "2025-02-10", estado: "En Albergue" },
-        { id: 5, nombre: "Luna", raza: "Labrador", edad: 1, ingreso: "2025-08-14", estado: "En Albergue" }
-    ],
-    
-    solicitudesAdopcion: 1240, // Acumulado en 5 años
-    totalAdopcionesExitosas: 980,
-    controlesVeterinariosRealizados: 3450,
-
-    // Inicializar o recuperar datos de la sesión
-    obtenerEstadisticas: function() {
-        return {
-            canesTotal: this.canesHistoricos.length,
-            adopciones: this.totalAdopcionesExitosas,
-            veterinaria: this.controlesVeterinariosRealizados
-        };
+const BASE_DATOS_INICIAL = {
+  periodo: "2021-2026",
+  estadisticas: {
+    adopcionesConcretadas: 248,
+    canesApadrinados: 64,
+    controlesVeterinarios: 512
+  },
+  historicoAnual: [
+    { anio: 2021, rescates: 45, adopciones: 32, apadrinamientos: 10 },
+    { anio: 2022, rescates: 58, adopciones: 41, apadrinamientos: 12 },
+    { anio: 2023, rescates: 67, adopciones: 50, apadrinamientos: 14 },
+    { anio: 2024, rescates: 74, adopciones: 56, apadrinamientos: 13 },
+    { anio: 2025, rescates: 69, adopciones: 51, apadrinamientos: 9 },
+    { anio: 2026, rescates: 48, adopciones: 38, apadrinamientos: 6 }
+  ],
+  canesDestacados: [
+    {
+      id: "bobby",
+      nombre: "Bobby",
+      tamano: "mediano",
+      sexo: "macho",
+      modalidades: ["adopcion", "apadrinar"]
+    },
+    {
+      id: "nala",
+      nombre: "Nala",
+      tamano: "pequeno",
+      sexo: "hembra",
+      modalidades: ["adopcion", "apadrinar"]
+    },
+    {
+      id: "toby",
+      nombre: "Toby",
+      tamano: "grande",
+      sexo: "macho",
+      modalidades: ["adopcion", "apadrinar"]
     }
+  ]
 };
 
-// --- CONTROLADOR PARA EL PANEL DE ADMINISTRACIÓN ---
-function inicializarPanelAdministracion() {
-    const spanCanes = document.getElementById("totalCanes");
-    const spanSolicitudes = document.getElementById("totalSolicitudes");
-    
-    if (spanCanes && spanSolicitudes) {
-        const stats = DB_REFUGIO.obtenerEstadisticas();
-        spanCanes.textContent = stats.canesTotal + " (Histórico 5 años)";
-        spanSolicitudes.textContent = DB_REFUGIO.solicitudesAdopcion + " solicitudes procesadas";
+function obtenerBaseDatos() {
+  try {
+    const guardada = localStorage.getItem(CLAVE_BD_ADOPCION);
+    if (guardada) {
+      return JSON.parse(guardada);
     }
+    localStorage.setItem(CLAVE_BD_ADOPCION, JSON.stringify(BASE_DATOS_INICIAL));
+    return BASE_DATOS_INICIAL;
+  } catch (error) {
+    return BASE_DATOS_INICIAL;
+  }
 }
 
-// --- CATALOGO DINÁMICO PARA EL MÓDULO DE PERROS ---
-function cargarCatalogoPerros() {
-    const listaPerros = document.getElementById("listaPerros");
-    if (listaPerros) {
-        listaPerros.innerHTML = ""; // Limpiar lista estática
-        const albergados = DB_REFUGIO.canesHistoricos.filter(c => c.estado === "En Albergue");
-        
-        albergados.forEach(perro => {
-            const li = document.createElement("li");
-            li.textContent = `${perro.nombre} - ${perro.edad} años (${perro.raza}) - Ingreso: ${perro.ingreso}`;
-            listaPerros.appendChild(li);
-        });
-    }
+function renderizarMetricas(bd) {
+  const adopcionesEl = document.getElementById("metrica-adopciones");
+  const apadrinadosEl = document.getElementById("metrica-apadrinados");
+  const veterinariaEl = document.getElementById("metrica-veterinaria");
+
+  if (adopcionesEl) {
+    adopcionesEl.textContent = bd.estadisticas.adopcionesConcretadas;
+  }
+  if (apadrinadosEl) {
+    apadrinadosEl.textContent = bd.estadisticas.canesApadrinados;
+  }
+  if (veterinariaEl) {
+    veterinariaEl.textContent = bd.estadisticas.controlesVeterinarios;
+  }
 }
 
-// Ejecución automática según la vista activa detectada
+function inicializarFiltros(bd) {
+  const filtroTamano = document.getElementById("filtro-tamano");
+  const filtroSexo = document.getElementById("filtro-sexo");
+  const filtroModalidad = document.getElementById("filtro-modalidad");
+  const estadoCatalogo = document.getElementById("estado-catalogo");
+  const elementosLista = document.querySelectorAll(".grilla-canes > li");
+
+  if (!filtroTamano || !filtroSexo || !filtroModalidad || !elementosLista.length) {
+    return;
+  }
+
+  function aplicarFiltros() {
+    const tamanoSel = filtroTamano.value;
+    const sexoSel = filtroSexo.value;
+    const modalidadSel = filtroModalidad.value;
+    let visibles = 0;
+
+    elementosLista.forEach((item) => {
+      const idCan = item.querySelector("[id^='can-']")?.id.replace("can-", "").replace("-nombre", "");
+      const canData = bd.canesDestacados.find((c) => c.id === idCan);
+
+      if (!canData) {
+        item.classList.remove("oculto");
+        visibles += 1;
+        return;
+      }
+
+      const cumpleTamano = tamanoSel === "todos" || canData.tamano === tamanoSel;
+      const cumpleSexo = sexoSel === "todos" || canData.sexo === sexoSel;
+      const cumpleModalidad = modalidadSel === "todos" || canData.modalidades.includes(modalidadSel);
+
+      if (cumpleTamano && cumpleSexo && cumpleModalidad) {
+        item.classList.remove("oculto");
+        visibles += 1;
+      } else {
+        item.classList.add("oculto");
+      }
+    });
+
+    if (estadoCatalogo) {
+      estadoCatalogo.textContent =
+        visibles === 0
+          ? "No hay perros destacados que coincidan con esos filtros. Cambia algún criterio para ver opciones."
+          : `Mostrando ${visibles} perfil(es) de perros según los filtros seleccionados.`;
+    }
+  }
+
+  filtroTamano.addEventListener("change", aplicarFiltros);
+  filtroSexo.addEventListener("change", aplicarFiltros);
+  filtroModalidad.addEventListener("change", aplicarFiltros);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    inicializarPanelAdministracion();
-    cargarCatalogoPerros();
+  const baseDatos = obtenerBaseDatos();
+  renderizarMetricas(baseDatos);
+  inicializarFiltros(baseDatos);
 });
-*/

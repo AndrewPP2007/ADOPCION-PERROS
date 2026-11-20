@@ -1,38 +1,200 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADOPCION-PERROS | Portal Principal</title>
-    <link rel="stylesheet" href="estyle.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADOPCION-PERROS | Adopción Responsable y Apadrinamiento</title>
+  <link rel="stylesheet" href="estyle.css">
 </head>
 <body>
-    <header>
-        <h1>Refugio y Veterinaria ADOPCION-PERROS</h1>
-        <p id="mensaje">Portal oficial de gestión, adopción y control de canes.</p>
-        <nav class="main-nav">
-            <a href="administracion/index.html">Administración</a> |
-            <a href="adopciones/index.html">Adopciones</a> |
-            <a href="perros/index.html">Perros</a> |
-            <a href="usuarios/index.html">Usuarios</a> |
-            <a href="veterinaria/index.html">Veterinaria</a>
-        </nav>
-    </header>
+  <a class="enlace-saltar" href="#contenido-principal">Saltar al contenido principal</a>
 
-    <main>
-        <section class="form-container">
-            <h2>Registro de Nuevo Can</h2>
-            <form id="formMascota">
-                <input type="text" id="nombreMascota" placeholder="Nombre del perro" required>
-                <input type="text" id="razaMascota" placeholder="Raza" required>
-                <input type="number" id="edadMascota" placeholder="Edad (años)" required>
-                <button type="submit">Registrar Mascota</button>
-            </form>
-        </section>
-    </main>
+  <header class="encabezado-sitio">
+    <nav class="barra-navegacion" aria-label="Navegación principal del portal">
+      <a class="marca-sitio" href="index.html">ADOPCION-PERROS</a>
+      <ul class="lista-enlaces">
+        <li><a href="index.html" aria-current="page">Inicio</a></li>
+        <li><a href="perros/index.html">Perros</a></li>
+        <li><a href="adopciones/index.html">Adopciones</a></li>
+        <li><a href="veterinaria/index.html">Veterinaria</a></li>
+        <li><a href="usuarios/index.html">Usuarios</a></li>
+        <li><a href="administracion/index.html">Administración</a></li>
+      </ul>
+    </nav>
 
-    <br>
-    <button id="boton">Haz clic aquí</button>
-    <script src="script.js"></script>
+    <section class="portada-hero" aria-labelledby="titulo-portada">
+      <h1 id="titulo-portada">Dales un hogar, cambia su historia para siempre</h1>
+      <p>Conoce a los perros rescatados listos para encontrar familia o ser apadrinados bajo un proceso responsable, transparente y con acompañamiento veterinario.</p>
+      <ul class="acciones-portada">
+        <li><a class="boton boton-primario" href="#catalogo-destacado">Explorar perros en adopción</a></li>
+        <li><a class="boton boton-secundario" href="adopciones/index.html">Cómo adoptar o apadrinar</a></li>
+      </ul>
+    </section>
+  </header>
+
+  <main id="contenido-principal">
+    <section class="seccion-filtros" aria-labelledby="titulo-filtros">
+      <h2 id="titulo-filtros">Encuentra a tu compañero ideal</h2>
+      <form class="formulario-filtros" aria-label="Filtrar perros disponibles">
+        <fieldset class="grupo-filtros">
+          <legend>Criterios de búsqueda</legend>
+          <label for="filtro-tamano">Tamaño</label>
+          <select id="filtro-tamano" name="tamano">
+            <option value="todos">Todos los tamaños</option>
+            <option value="pequeno">Pequeño</option>
+            <option value="mediano">Mediano</option>
+            <option value="grande">Grande</option>
+          </select>
+
+          <label for="filtro-sexo">Sexo</label>
+          <select id="filtro-sexo" name="sexo">
+            <option value="todos">Todos</option>
+            <option value="macho">Macho</option>
+            <option value="hembra">Hembra</option>
+          </select>
+
+          <label for="filtro-modalidad">Modalidad</label>
+          <select id="filtro-modalidad" name="modalidad">
+            <option value="todos">Adoptar o Apadrinar</option>
+            <option value="adopcion">Solo adopción</option>
+            <option value="apadrinar">Apadrinamiento</option>
+          </select>
+        </fieldset>
+      </form>
+    </section>
+
+    <section id="catalogo-destacado" class="seccion-catalogo" aria-labelledby="titulo-catalogo">
+      <h2 id="titulo-catalogo">Perros en adopción y apadrinamiento</h2>
+      <p id="estado-catalogo" class="estado-catalogo" aria-live="polite">Mostrando perfiles destacados del refugio.</p>
+
+      <ul class="grilla-canes">
+        <li>
+          <article class="tarjeta-can" aria-labelledby="can-1-nombre">
+            <figure class="media-can">
+              <img src="perros/can-bobby.jpg" alt="Retrato de Bobby, perro mestizo de tamaño mediano con mirada tranquila">
+              <figcaption>Rescatado y evaluado por veterinaria</figcaption>
+            </figure>
+            <header class="cabecera-can">
+              <h3 id="can-1-nombre">Bobby</h3>
+              <p class="etiqueta-estado">Disponible para adoptar o apadrinar</p>
+            </header>
+            <dl class="ficha-can">
+              <dt>Edad aproximada</dt>
+              <dd>2 años</dd>
+              <dt>Sexo</dt>
+              <dd>Macho</dd>
+              <dt>Tamaño</dt>
+              <dd>Mediano</dd>
+              <dt>Carácter</dt>
+              <dd>Cariñoso, sociable y juguetón</dd>
+            </dl>
+            <p class="historia-can">“Me rescataron cuando era cachorro y hoy me encanta pasear, recibir mimos y compartir tardes tranquilas en casa.”</p>
+            <footer class="acciones-can">
+              <a class="boton boton-primario" href="adopciones/index.html?can=bobby&tipo=adopcion">Postular para adoptar</a>
+              <a class="boton boton-secundario" href="adopciones/index.html?can=bobby&tipo=apadrinar">Apadrinar</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="tarjeta-can" aria-labelledby="can-2-nombre">
+            <figure class="media-can">
+              <img src="perros/can-nala.jpg" alt="Retrato de Nala, perra joven de tamaño pequeño con expresión atenta">
+              <figcaption>Vacunas al día y control preventivo</figcaption>
+            </figure>
+            <header class="cabecera-can">
+              <h3 id="can-2-nombre">Nala</h3>
+              <p class="etiqueta-estado">Disponible para adoptar o apadrinar</p>
+            </header>
+            <dl class="ficha-can">
+              <dt>Edad aproximada</dt>
+              <dd>1 año y medio</dd>
+              <dt>Sexo</dt>
+              <dd>Hembra</dd>
+              <dt>Tamaño</dt>
+              <dd>Pequeño</dd>
+              <dt>Carácter</dt>
+              <dd>Atenta, dulce y adaptable</dd>
+            </dl>
+            <p class="historia-can">“Soy pequeña, ideal para departamento o casa, y busco una familia que me dé rutina, cariño y seguridad.”</p>
+            <footer class="acciones-can">
+              <a class="boton boton-primario" href="adopciones/index.html?can=nala&tipo=adopcion">Postular para adoptar</a>
+              <a class="boton boton-secundario" href="adopciones/index.html?can=nala&tipo=apadrinar">Apadrinar</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="tarjeta-can" aria-labelledby="can-3-nombre">
+            <figure class="media-can">
+              <img src="perros/can-toby.jpg" alt="Retrato de Toby, perro adulto de tamaño grande con postura noble">
+              <figcaption>Acompañamiento médico continuo</figcaption>
+            </figure>
+            <header class="cabecera-can">
+              <h3 id="can-3-nombre">Toby</h3>
+              <p class="etiqueta-estado">Disponible para adoptar o apadrinar</p>
+            </header>
+            <dl class="ficha-can">
+              <dt>Edad aproximada</dt>
+              <dd>4 años</dd>
+              <dt>Sexo</dt>
+              <dd>Macho</dd>
+              <dt>Tamaño</dt>
+              <dd>Grande</dd>
+              <dt>Carácter</dt>
+              <dd>Noble, leal y de energía media</dd>
+            </dl>
+            <p class="historia-can">“Tengo experiencia en dar compañía fiel; si no puedes adoptarme hoy, apadrinarme ayuda a cubrir mi cuidado diario.”</p>
+            <footer class="acciones-can">
+              <a class="boton boton-primario" href="adopciones/index.html?can=toby&tipo=adopcion">Postular para adoptar</a>
+              <a class="boton boton-secundario" href="adopciones/index.html?can=toby&tipo=apadrinar">Apadrinar</a>
+            </footer>
+          </article>
+        </li>
+      </ul>
+
+      <p class="enlace-catalogo-completo">
+        <a class="boton boton-secundario" href="perros/index.html">Ver catálogo completo de perros</a>
+      </p>
+    </section>
+
+    <section class="seccion-proceso" aria-labelledby="titulo-proceso">
+      <h2 id="titulo-proceso">¿Cómo funciona la adopción responsable?</h2>
+      <ol class="lista-pasos">
+        <li>
+          <h3>1. Conoce y postula</h3>
+          <p>Revisa el perfil, carácter y estado veterinario del perro y completa tu solicitud en línea.</p>
+        </li>
+        <li>
+          <h3>2. Evaluación y entrevista</h3>
+          <p>Validamos las condiciones del hogar y resolvemos dudas para asegurar un vínculo duradero.</p>
+        </li>
+        <li>
+          <h3>3. Bienvenida y seguimiento</h3>
+          <p>Coordinamos la entrega responsable y realizamos acompañamiento cercano tras la adopción.</p>
+        </li>
+      </ol>
+    </section>
+
+    <aside class="seccion-impacto" aria-labelledby="titulo-impacto">
+      <h2 id="titulo-impacto">Impacto acumulado y transparencia (2021–2026)</h2>
+      <p>Registro histórico simulado del portal para dar seguimiento a rescates, atenciones veterinarias y adopciones concretadas.</p>
+      <dl class="metricas-impacto">
+        <dt>Adopciones concretadas (2021–2026)</dt>
+        <dd id="metrica-adopciones">248</dd>
+        <dt>Canes apadrinados activamente</dt>
+        <dd id="metrica-apadrinados">64</dd>
+        <dt>Controles veterinarios registrados</dt>
+        <dd id="metrica-veterinaria">512</dd>
+      </dl>
+    </aside>
+  </main>
+
+  <footer class="pie-sitio">
+    <p><strong>ADOPCION-PERROS</strong> — Proyecto académico de adopción responsable y gestión modular.</p>
+    <p>IES Público "Trujillo" · Estudiante: Andy Pesantes Paredes · Docente: Pedro Esgardo Leon Alva</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
