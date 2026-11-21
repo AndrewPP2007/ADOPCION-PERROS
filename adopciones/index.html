@@ -7,16 +7,69 @@
     <link rel="stylesheet" href="../estyle.css">
 </head>
 <body>
-    <header>
-        <h1>Gestión de Solicitudes de Adopción</h1>
-        <p>Seguimiento de expedientes y procesos de empalme familiar.</p>
-        <p><a href="../index.html">← Volver al Inicio</a></p>
-    </header>
-    <main>
-       <section class="form-container">
-    <h2>Solicitudes Pendientes</h2>
-    <p>No hay solicitudes pendientes en este momento.</p>
-</section>
-    </main>
+  <a class="enlace-saltar" href="#contenido-principal">Saltar al contenido principal</a>
+
+  <header class="encabezado-sitio">
+    <nav class="barra-navegacion" aria-label="Navegación principal del portal">
+      <a class="marca-sitio" href="../index.html">ADOPCION-PERROS</a>
+      <ul class="lista-enlaces">
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../perros/index.html">Perros</a></li>
+        <li><a href="index.html" aria-current="page">Adopciones</a></li>
+        <li><a href="../veterinaria/index.html">Veterinaria</a></li>
+        <li><a href="../usuarios/index.html">Usuarios</a></li>
+        <li><a href="../administracion/index.html">Administración</a></li>
+      </ul>
+    </nav>
+
+    <section class="portada-hero" aria-labelledby="titulo-adopciones">
+      <h1 id="titulo-adopciones">Adopción responsable y apadrinamiento solidario</h1>
+      <p>Postula para adoptar un perro o apadrina su alimentación y controles veterinarios con registro persistente en <code>localStorage</code>.</p>
+    </section>
+  </header>
+
+  <main id="contenido-principal">
+    <section class="seccion-filtros" aria-labelledby="titulo-form-adopcion">
+      <h2 id="titulo-form-adopcion">Formulario de postulación y apadrinamiento</h2>
+      <form id="form-adopcion-apadrinamiento" class="grupo-filtros">
+        <fieldset class="grupo-filtros">
+          <legend>Solicitud del postulante o padrino</legend>
+
+          <label for="seleccion-perro-adopcion">Perro registrado</label>
+          <select id="seleccion-perro-adopcion" name="perroId" required></select>
+
+          <label for="tipo-gestion">Tipo de gestión</label>
+          <select id="tipo-gestion" name="tipoGestion" required>
+            <option value="adopcion">Postular para adoptar</option>
+            <option value="apadrinar">Apadrinar can</option>
+          </select>
+
+          <label for="nombre-solicitante">Nombre completo</label>
+          <input id="nombre-solicitante" name="solicitante" type="text" required>
+
+          <label for="contacto-solicitante">Teléfono o correo de contacto</label>
+          <input id="contacto-solicitante" name="contacto" type="text" required>
+
+          <label for="aporte-mensual">Aporte de apadrinamiento (S/ mensual, si aplica)</label>
+          <input id="aporte-mensual" name="aporte" type="number" min="0" step="5" value="25">
+
+          <label for="motivo-gestion">Compromiso o motivo</label>
+          <textarea id="motivo-gestion" name="motivo" rows="2" required></textarea>
+
+          <button class="boton boton-primario" type="submit">Registrar solicitud</button>
+        </fieldset>
+      </form>
+      <p id="mensaje-adopcion" class="estado-catalogo" aria-live="polite"></p>
+    </section>
+
+    <section class="seccion-catalogo" aria-labelledby="titulo-historial-gestiones">
+      <h2 id="titulo-historial-gestiones">Solicitudes y apadrinamientos registrados</h2>
+      <ul id="lista-gestiones-adopcion" class="lista-pasos"></ul>
+    </section>
+  </main>
+
+  <footer class="pie-sitio" aria-label="Pie de página">
+    <p><strong>ADOPCION-PERROS</strong> — Proyecto académico IES Público "Trujillo" · Andy Pesantes Paredes · Docente: Pedro Esgardo Leon Alva</p>
+  </footer>
 </body>
 </html>
