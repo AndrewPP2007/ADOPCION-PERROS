@@ -351,3 +351,73 @@ document.addEventListener("DOMContentLoaded", () => {
   dibujarGraficoImpacto(bd);
   inicializarEventosGlobales(bd);
 });
+function obtenerRutaBaseRelativa() {
+  const ruta = window.location.pathname;
+  return /\/(perros|adopciones|veterinaria|usuarios|administracion)\//.test(ruta) ? "../" : "";
+}
+
+function inicializarFormularioRegistroPerro(bd, rutaBase) {
+  const form = document.getElementById("form-registro-perro");
+  const mensajeEl = document.getElementById("mensaje-registro-perro");
+  if (!form) return;
+
+  form.addEventListener("submit", (evento) => {
+    evento.preventDefault();
+    const datos = new FormData(form);
+    const nombre = String(datos.get("nombre") || "").trim();
+    const raza = String(datos.get("raza") || "").trim();
+    const tamano = String(datos.get("tamano") || "mediano");
+    const faseVida = String(datos.get("faseVida") || "juvenil");
+    const edadTexto = String(datos.get("edadTexto") || "").trim();
+    const sexo = String(datos.get("sexo") || "macho");
+    const modalidadRaw = String(datos.get("modalidad") || "ambas");
+    const caracter = String(datos.get("caracter") || "").trim();
+    const historia = String(datos.get("historia") || "").trim();
+
+    if (!nombre || !raza) return;
+
+    const slugBase = nombre
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "can";
+
+    const idUnico = `${slugBase}-${Date.now().toString().slice(-4)}`;
+    const modalidades =
+      modalidadRaw === "ambas"
+        ? ["adopcion", "apadrinar"]
+        : [modalidadRaw];
+
+    const nuevoPerro = {
+      id: idUnico,
+      nombre,
+      raza,
+      tamano,
+      faseVida,
+      edadTexto: edadTexto || "No especificada",
+      sexo,
+      caracter: caracter || "Sociable",
+      historia: historia || "Registrado en el portal para adopción o apadrinamiento responsable.",
+      imagen: `perros/${idUnico}.jpg`,
+      modalidades,
+      estado: "Disponible"
+    };
+
+    bd.perros.unshift(nuevoPerro);
+    const registro2026 = bd.historicoAnual.find((item) => item.anio === 2026);
+    if (registro2026) {
+      registro2026.rescates += 1;
+    }
+
+    guardarBaseDatos(bd);
+    poblarFiltroRazas(bd);
+    renderizarCatalogoFiltrado(bd, rutaBase);
+    dibujarGraficoImpacto(bd);
+    form.reset();
+
+    if (mensajeEl) {
+      mensajeEl.textContent = `Perro "${nombre}" (${raza}, ${formatearTamano(tamano)}, ${formatearFaseVida(faseVida)}) registrado. Imagen planificada: ${nuevoPerro.imagen}.`;
+    }
+  });
+}
