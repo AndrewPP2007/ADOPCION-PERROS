@@ -421,3 +421,107 @@ function inicializarFormularioRegistroPerro(bd, rutaBase) {
     }
   });
 }
+function poblarSelectorPerrosAdopcion(bd) {
+  const selectPerro = document.getElementById("seleccion-perro-adopcion");
+  if (!selectPerro) return;
+
+  selectPerro.innerHTML = "";
+  bd.perros.forEach((perro) => {
+    const option = document.createElement("option");
+    option.value = perro.id;
+    option.textContent = `${perro.nombre} — ${perro.raza} (${formatearTamano(perro.tamano)}, ${formatearFaseVida(perro.faseVida)}) [${perro.estado}]`;
+    selectPerro.appendChild(option);
+  });
+}
+
+function renderizarHistorialGestiones(bd) {
+  const lista = document.getElementById("lista-gestiones-adopcion");
+  if (!lista) return;
+
+  lista.innerHTML = "";
+  const combinadas = [
+    ...(bd.postulaciones || []).map((p) => ({ ...p, etiqueta: "Postulación de adopción" })),
+    ...(bd.apadrinamientos || []).map((a) => ({ ...a, etiqueta: `Apadrinamiento (S/ ${a.aporte}/mes)` }))
+  ].reverse();
+
+  if (!combinadas.length) {
+    const li = document.createElement("li");
+    const h3 = document.createElement("h3");
+    h3.textContent = "Sin registros recientes";
+    const p = document.createElement("p");
+    p.textContent = "Envía el formulario para registrar una postulación de adopción o un apadrinamiento en localStorage.";
+    li.append(h3, p);
+    lista.appendChild(li);
+    return;
+  }
+
+  combinadas.forEach((item) => {
+    const li = document.createElement("li");
+    const h3 = document.createElement("h3");
+    h3.textContent = `${item.etiqueta} — ${item.nombrePerro}`;
+    const p = document.createElement("p");
+    p.textContent = `Solicitante: ${item.solicitante} (${item.contacto}) · Motivo: ${item.motivo}`;
+    li.append(h3, p);
+    lista.appendChild(li);
+  });
+}
+
+function inicializarFormularioAdopcionApadrinamiento(bd, rutaBase) {
+  const form = document.getElementById("form-adopcion-apadrinamiento");
+  const mensajeEl = document.getElementById("mensaje-adopcion");
+  if (!form) return;
+
+  form.addEventListener("submit", (evento) => {
+    evento.preventDefault();
+    const datos = new FormData(form);
+    const perroId = String(datos.get("perroId") || "");
+    const tipoGestion = String(datos.get("tipoGestion") || "adopcion");
+    const solicitante = String(datos.get("solicitante") || "").trim();
+    const contacto = String(datos.get("contacto") || "").trim();
+    const aporte = Math.max(0, Number(datos.get("aporte") || 0));
+    const motivo = String(datos.get("motivo") || "").trim();
+
+    const perro = bd.perros.find((p) => p.id === perroId);
+    if (!perro || !solicitante) return;
+
+    const registro2026 = bd.historicoAnual.find((item) => item.anio === 2026);
+
+    if (tipoGestion === "apadrinar") {
+      perro.estado = "Apadrinado";
+      bd.estadisticas.canesApadrinados += 1;
+      bd.estadisticas.aporteAcumuladoMensual = (bd.estadisticas.aporteAcumuladoMensual || 0) + aporte;
+      if (registro2026) registro2026.apadrinamientos += 1;
+      bd.apadrinamientos.push({
+        perroId: perro.id,
+        nombrePerro: perro.nombre,
+        solicitante,
+        contacto,
+        aporte,
+        motivo
+      });
+    } else {
+      perro.estado = "En proceso de adopción";
+      bd.estadisticas.adopcionesConcretadas += 1;
+      if (registro2026) registro2026.adopciones += 1;
+      bd.postulaciones.push({
+        perroId: perro.id,
+        nombrePerro: perro.nombre,
+        solicitante,
+        contacto,
+        motivo
+      });
+    }
+
+    guardarBaseDatos(bd);
+    poblarSelectorPerrosAdopcion(bd);
+    renderizarMetricas(bd);
+    renderizarCatalogoFiltrado(bd, rutaBase);
+    renderizarHistorialGestiones(bd);
+    dibujarGraficoImpacto(bd);
+    form.reset();
+
+    if (mensajeEl) {
+      mensajeEl.textContent = `Registro guardado para ${perro.nombre} (${perro.raza}, ${formatearFaseVida(perro.faseVida)}). Estado actualizado: ${perro.estado}.`;
+    }
+  });
+}
